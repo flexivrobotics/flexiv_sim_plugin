@@ -119,8 +119,10 @@ int main(int argc, char* argv[])
 
     // Wait for connected
     while (!user_node.connected()) {
+        spdlog::warn("Waiting for connection with Flexiv Elements Studio");
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
+    spdlog::info("Connected with Flexiv Elements Studio. Starting mocked physics loop.");
 
     // Run mocked physics loop
     while (user_node.connected()) {
