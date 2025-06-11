@@ -73,24 +73,22 @@ void StepPhysics(sim_plugin::UserNode& user_node)
 
     // Step 2: send robot states to Flexiv Elements Studio
     // =============================================================================================
-    user_node.SendRobotStates(robot_states);
+    if (!user_node.SendRobotStates(robot_states)) {
+        spdlog::error("Failed to send robot states data");
+    }
 
     // Step 3: wait for Elements Studio to calculate and deliver new robot commands
     // =============================================================================================
     // Must set a timeout value to avoid deadlock
     constexpr unsigned int kWaitTimeoutMs = 100;
-    user_node.WaitForRobotCommands(kWaitTimeoutMs);
+    if (!user_node.WaitForRobotCommands(kWaitTimeoutMs)) {
+        spdlog::error("WaitForRobotCommands() timeout");
+    }
 
     // Step 4: apply joint torques command to the simulated robot in the external simulator
     // =============================================================================================
     auto target_joint_torques = user_node.robot_commands().tau_d;
-    // Call the external simulator's API to apply the target joint torques, here we just print the
-    // values
-    std::cout << std::fixed << std::setprecision(1) << "tau_d = ";
-    for (const auto& t : target_joint_torques) {
-        std::cout << t << " ";
-    }
-    std::cout << std::endl;
+    // Call the external simulator's API to apply the target joint torques
 
     // End the current physics step with kPhysicsLoopPeriod as the total loop period
     auto loop_period_us = static_cast<unsigned int>(kPhysicsLoopPeriod * 1'000'000);
