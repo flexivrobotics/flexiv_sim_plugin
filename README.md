@@ -39,7 +39,7 @@ In theory, any simulator that meets the following criteria should work:
 
        bash switch_physics_engine.sh
 
-   Select [External] or [Isaac Sim] when prompted.
+   Select *External* or *Isaac Sim* when prompted.
 
 ### Create a simulated robot in Elements Studio
 
