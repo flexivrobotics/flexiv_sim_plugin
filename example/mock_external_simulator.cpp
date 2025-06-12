@@ -17,10 +17,10 @@
 using namespace flexiv;
 
 namespace {
-// Physics loop frequency of the external simulator
-constexpr unsigned int kPhysicsLoopFreq = 2000;
-// Physics loop period of the external simulator [sec]
-constexpr double kPhysicsLoopPeriod = 1.0 / kPhysicsLoopFreq;
+// Frequency of the external simulator's physics loop [Hz]
+constexpr unsigned int kPhysicsFreq = 2000;
+// Period of the external simulator's physics loop [sec]
+constexpr double kPhysicsPeriod = 1.0 / kPhysicsFreq;
 
 // Sine-sweep trajectory amplitude and frequency
 constexpr double kSineAmp = 0.035;
@@ -45,7 +45,7 @@ void PrintHelp()
     // clang-format on
 }
 
-/** @brief Print robot states data @ 1Hz */
+/** @brief Step once the external simulator's physics loop. */
 void StepPhysics(sim_plugin::UserNode& user_node)
 {
     // Record time point at the beginning of this cycle
@@ -62,13 +62,13 @@ void StepPhysics(sim_plugin::UserNode& user_node)
     // Set joint positions to sine waves
     for (size_t i = 0; i < sim_plugin::kJointDoF; i++) {
         robot_states.q[i]
-            = kInitQ[i] + kSineAmp * sin(2 * M_PI * kSineFreq * g_servo_cycle * kPhysicsLoopPeriod);
+            = kInitQ[i] + kSineAmp * sin(2 * M_PI * kSineFreq * g_servo_cycle * kPhysicsPeriod);
     }
 
     // Set joint velocities to corresponding cosine waves
     for (size_t i = 0; i < sim_plugin::kJointDoF; i++) {
         robot_states.dq[i] = kSineAmp * 2 * M_PI * kSineFreq
-                             * cos(2 * M_PI * kSineFreq * g_servo_cycle * kPhysicsLoopPeriod);
+                             * cos(2 * M_PI * kSineFreq * g_servo_cycle * kPhysicsPeriod);
     }
 
     // Step 2: send robot states to Flexiv Elements Studio
@@ -90,8 +90,8 @@ void StepPhysics(sim_plugin::UserNode& user_node)
     auto target_joint_torques = user_node.robot_commands().tau_d;
     // Call the external simulator's API to apply the target joint torques
 
-    // End the current physics step with kPhysicsLoopPeriod as the total loop period
-    auto loop_period_us = static_cast<unsigned int>(kPhysicsLoopPeriod * 1'000'000);
+    // End the current physics step with kPhysicsPeriod as the total loop period
+    auto loop_period_us = static_cast<unsigned int>(kPhysicsPeriod * 1'000'000);
     std::this_thread::sleep_until(current_time + std::chrono::microseconds(loop_period_us));
 }
 
@@ -120,7 +120,7 @@ int main(int argc, char* argv[])
         spdlog::warn("Waiting for connection with Flexiv Elements Studio");
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
-    spdlog::info("Connected with Flexiv Elements Studio. Starting mocked physics loop.");
+    spdlog::info("Connected with Flexiv Elements Studio, starting mocked physics loop");
 
     // Run mocked physics loop
     while (user_node.connected()) {
