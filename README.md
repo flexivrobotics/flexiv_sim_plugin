@@ -11,6 +11,10 @@ A middleware plugin to connect Flexiv Elements Studio to any external simulator 
 | --------------------- | ------------ | -------------------- | ---------------------- |
 | Linux (Ubuntu 20.04+) | x86_64       | GCC v9.4+            | 3.8, 3.10, 3.12        |
 
+## Demos
+
+Demo videos showing Flexiv Elements Studio connected to NVIDIA Isaac Sim can be found [here](https://github.com/flexivrobotics/isaac_sim_ws?tab=readme-ov-file#demos).
+
 ## Tested External Simulators
 
 The following external simulators are tested and known to work with Flexiv Sim Plugin:
