@@ -13,7 +13,19 @@ A middleware plugin to connect Flexiv Elements Studio to any external simulator 
 
 ## Demos
 
-Demo videos showing Flexiv Elements Studio connected to NVIDIA Isaac Sim can be found [here](https://github.com/flexivrobotics/isaac_sim_ws?tab=readme-ov-file#demos).
+Below are some demos where Flexiv Elements Studio is connected to NVIDIA Isaac Sim to simulate applications where force control is required. The full demo videos can be found [here](https://github.com/flexivrobotics/isaac_sim_ws?tab=readme-ov-file#demos).
+
+### Tower of Hanoi
+
+![Tower of Hanoi](doc/demo/tower_of_hanoi.gif)
+
+### Peg-in-hole
+
+![Peg-in-hole](doc/demo/peg_in_hole.gif)
+
+### Dual-robot polish
+
+![Dual-robot polish](doc/demo/dual_arm_polish.gif)
 
 ## Tested External Simulators
 
