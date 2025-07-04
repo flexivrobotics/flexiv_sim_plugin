@@ -11,10 +11,6 @@ A middleware plugin to connect Flexiv Elements Studio to any external simulator 
 | --------------------- | ------------ | -------------------- | ---------------------- |
 | Linux (Ubuntu 20.04+) | x86_64       | GCC v9.4+            | 3.8, 3.10, 3.12        |
 
-## Demos
-
-Demo videos showing Flexiv Elements Studio connected to NVIDIA Isaac Sim can be found [here](https://github.com/flexivrobotics/isaac_sim_ws?tab=readme-ov-file#demos).
-
 ## Tested External Simulators
 
 The following external simulators are tested and known to work with Flexiv Sim Plugin:
@@ -27,6 +23,22 @@ In theory, any simulator that meets the following criteria should work:
 1. Has a C++ or Python interface.
 2. Provides joint positions and velocities of the simulated robot.
 3. The joints of the simulated robot are actuated by torque.
+
+## Demos
+
+Below are some demos where Flexiv Elements Studio is connected to NVIDIA Isaac Sim to simulate applications where force control is required. The full demo videos can be found [here](https://github.com/flexivrobotics/isaac_sim_ws?tab=readme-ov-file#demos).
+
+### Tower of Hanoi
+
+![Tower of Hanoi](doc/demo/tower_of_hanoi.gif)
+
+### Peg-in-hole
+
+![Peg-in-hole](doc/demo/peg_in_hole.gif)
+
+### Dual-robot polish
+
+![Dual-robot polish](doc/demo/dual_arm_polish.gif)
 
 ## Flexiv Elements Studio Setup
 
