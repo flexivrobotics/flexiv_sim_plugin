@@ -23,24 +23,29 @@ constexpr size_t kIOPorts = 16;
 struct SimRobotStates
 {
     /** @brief Customized constructor */
-    SimRobotStates(uint64_t _servo_cycle, const std::array<float, kJointDoF>& _q,
-        const std::array<float, kJointDoF>& _dq)
+    SimRobotStates(
+        uint64_t _servo_cycle, const std::vector<float>& _q, const std::vector<float>& _dq)
     : servo_cycle(_servo_cycle)
     , q(_q)
     , dq(_dq)
     {
     }
+
     /** @brief Default constructor */
     SimRobotStates() = default;
 
     /** Servo cycle incremented once per physics step of the external simulator */
     uint64_t servo_cycle = 0;
 
-    /** Current joint positions of the simulated robot [rad] */
-    std::array<float, kJointDoF> q = {};
+    /** Current joint positions of the simulated robot: \f$ q \in \mathbb{R}^{n \times 1} \f$. Unit:
+     * \f$ [rad] or [m] \f$.
+     * @note This contains values for both the external axes (if any) and the robot manipulator. */
+    std::vector<float> q = {};
 
-    /** Current joint velocities of the simulated robot [rad/s] */
-    std::array<float, kJointDoF> dq = {};
+    /** Current joint velocities of the simulated robot: \f$ \dot{q} \in \mathbb{R}^{n \times 1}
+     * \f$. Unit: \f$ [rad/s] or [m/s] \f$.
+     * @note This contains values for both the external axes (if any) and the robot manipulator. */
+    std::vector<float> dq = {};
 };
 
 /** Commands data for a simulated robot in the external simulator */
