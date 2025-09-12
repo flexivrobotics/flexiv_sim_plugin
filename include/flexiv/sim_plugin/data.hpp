@@ -8,6 +8,7 @@
 #define FLEXIV_SIM_PLUGIN_DATA_HPP_
 
 #include <array>
+#include <vector>
 #include <string>
 
 namespace flexiv {
@@ -49,17 +50,19 @@ struct SimRobotStates
 struct SimRobotCommands
 {
     /** @brief Customized constructor */
-    SimRobotCommands(const std::array<float, kJointDoF>& _tau_d,
+    SimRobotCommands(const std::vector<float>& _target_drives,
         const std::array<bool, kIOPorts>& _digital_outputs)
-    : tau_d(_tau_d)
+    : target_drives(_target_drives)
     , digital_outputs(_digital_outputs)
     {
     }
     /** @brief Default constructor */
     SimRobotCommands() = default;
 
-    /** Target joint torques for the simulated robot [Nm]. */
-    std::array<float, kJointDoF> tau_d = {};
+    /** Target joint drives for the simulated robot, can be torques or velocities depending on the
+     * drive type of the joint. Unit: \f$ [Nm] or [rad/s] or [m/s] \f$.
+     * @note This contains values for both the external axes (if any) and the robot manipulator. */
+    std::vector<float> target_drives = {};
 
     /** Desired digital outputs for the simulated robot. The index of this boolean array corresponds
      * to that of the digital output ports. True: port high, false: port low. */
