@@ -13,9 +13,6 @@
 namespace flexiv {
 namespace sim_plugin {
 
-/** Joint-space degrees of freedom of the simulated robot */
-constexpr size_t kJointDoF = 7;
-
 /** Number of simulated digital IO ports */
 constexpr size_t kIOPorts = 16;
 
