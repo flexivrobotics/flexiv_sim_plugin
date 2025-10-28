@@ -9,7 +9,7 @@ A middleware plugin to connect Flexiv Elements Studio to any external simulator 
 
 | **OS**                | **Platform** | **C++ compiler kit** | **Python interpreter** |
 | --------------------- | ------------ | -------------------- | ---------------------- |
-| Linux (Ubuntu 20.04+) | x86_64       | GCC v9.4+            | 3.8, 3.10, 3.12        |
+| Linux (Ubuntu 20.04+) | x86_64       | GCC v9.4+            | 3.10, 3.11, 3.12       |
 
 ## Tested External Simulators
 
