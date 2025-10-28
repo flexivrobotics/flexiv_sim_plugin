@@ -16,7 +16,7 @@ message(STATUS "OS: ${CMAKE_SYSTEM_NAME}")
 message(STATUS "Processor: ${CMAKE_SYSTEM_PROCESSOR}")
 if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
   if(${CMAKE_SYSTEM_PROCESSOR} MATCHES "x86_64")
-    set(SIM_PLUGIN_STATIC_LIB "libflexiv_sim_plugin.x86_64-linux-gnu.a")
+    set(SIM_PLUGIN_LIB "libflexiv_sim_plugin.x86_64-linux-gnu.a")
   else()
     message(FATAL_ERROR "Linux with ${CMAKE_SYSTEM_PROCESSOR} processor is currently not supported.")
   endif()
@@ -49,20 +49,20 @@ message(STATUS "Found fastcdr v${fastcdr_VERSION}: ${fastcdr_DIR}")
 # ===================================================================
 #      CREATE LIBRARY
 # ===================================================================
-# Create an INTERFACE library with no source file to compile
-add_library(${PROJECT_NAME} INTERFACE)
+# Create static library target with dummy source
+add_library(${PROJECT_NAME} STATIC ${CMAKE_CURRENT_SOURCE_DIR}/lib/dummy.cpp)
 
-# Create an alias of the library using flexiv namespace,
-# to imitate the install target which uses flexiv namespace.
+# Create an alias of the target with flexiv namespace
 add_library(flexiv::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 
-target_include_directories(${PROJECT_NAME} INTERFACE
+# Set include directories
+target_include_directories(${PROJECT_NAME} PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>
 )
 
-target_link_libraries(${PROJECT_NAME} INTERFACE
-  ${CMAKE_CURRENT_SOURCE_DIR}/lib/${SIM_PLUGIN_STATIC_LIB}
+# Link to dependencies
+target_link_libraries(${PROJECT_NAME} PUBLIC
   Threads::Threads
   spdlog::spdlog
   fastrtps
@@ -71,11 +71,11 @@ target_link_libraries(${PROJECT_NAME} INTERFACE
 
 # Use moderate compiler warning option
 if(CMAKE_HOST_UNIX)
-  target_compile_options(${PROJECT_NAME} INTERFACE -Wall -Wextra)
+  target_compile_options(${PROJECT_NAME} PUBLIC -Wall -Wextra)
 else()
-  target_compile_options(${PROJECT_NAME} INTERFACE /W1)
+  target_compile_options(${PROJECT_NAME} PUBLIC /W1)
 endif()
 
-# Install the INTERFACE library
+# Install the library
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/FlexivInstallLibrary.cmake)
 FlexivInstallLibrary()
