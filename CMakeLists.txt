@@ -42,6 +42,10 @@ message(STATUS "Found spdlog v${spdlog_VERSION}: ${spdlog_DIR}")
 find_package(fastrtps REQUIRED)
 message(STATUS "Found fastrtps v${fastrtps_VERSION}: ${fastrtps_DIR}")
 
+# Fast-CDR
+find_package(fastcdr REQUIRED)
+message(STATUS "Found fastcdr v${fastcdr_VERSION}: ${fastcdr_DIR}")
+
 # ===================================================================
 #      CREATE LIBRARY
 # ===================================================================
@@ -62,6 +66,7 @@ target_link_libraries(${PROJECT_NAME} INTERFACE
   Threads::Threads
   spdlog::spdlog
   fastrtps
+  fastcdr
 )
 
 # Use moderate compiler warning option
