@@ -27,8 +27,7 @@ constexpr double kSineAmp = 0.035;
 constexpr double kSineFreq = 0.3;
 
 // Initial joint positions when the robot is at home posture [rad]
-constexpr std::array<float, sim_plugin::kJointDoF> kInitQ
-    = {0.0, -0.698132, 0.0, 1.5708, 0.0, 0.698132, 0.0};
+const std::vector<float> kInitQ = {0.0, -0.698132, 0.0, 1.5708, 0.0, 0.698132, 0.0};
 
 // Servo cycle of the physics loop
 unsigned int g_servo_cycle = 0;
@@ -60,13 +59,13 @@ void StepPhysics(sim_plugin::UserNode& user_node)
     robot_states.servo_cycle = g_servo_cycle++;
 
     // Set joint positions to sine waves
-    for (size_t i = 0; i < sim_plugin::kJointDoF; i++) {
+    for (size_t i = 0; i < kInitQ.size(); i++) {
         robot_states.q[i]
             = kInitQ[i] + kSineAmp * sin(2 * M_PI * kSineFreq * g_servo_cycle * kPhysicsPeriod);
     }
 
     // Set joint velocities to corresponding cosine waves
-    for (size_t i = 0; i < sim_plugin::kJointDoF; i++) {
+    for (size_t i = 0; i < kInitQ.size(); i++) {
         robot_states.dq[i] = kSineAmp * 2 * M_PI * kSineFreq
                              * cos(2 * M_PI * kSineFreq * g_servo_cycle * kPhysicsPeriod);
     }
@@ -87,7 +86,7 @@ void StepPhysics(sim_plugin::UserNode& user_node)
 
     // Step 4: apply joint torques command to the simulated robot in the external simulator
     // =============================================================================================
-    auto target_joint_torques = user_node.robot_commands().tau_d;
+    auto target_joint_torques = user_node.robot_commands().target_drives;
     // Call the external simulator's API to apply the target joint torques
 
     // End the current physics step with kPhysicsPeriod as the total loop period
