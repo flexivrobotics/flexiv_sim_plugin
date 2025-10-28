@@ -127,7 +127,7 @@ An example program that mocks an external simulator is provided and can be used 
    NOTE: the robot serial number provided to the program is the same one you noted down when creating the simulated robot in Flexiv Elements Studio.
 
 2. Go back to Elements Studio, then restart the exited simulator by toggling ON the *Connect* button.
-3. Wait for the connection to establish. If the connection is successful, you should see the visualized robot in Elements Studio moving every joint back and forth. A software error should occur in Elements Studio which is expected because the mock external simulator did not close the loop by applying the calculated joint torques command to the simulated robot in it. This won't happen to real external simulators.
+3. Wait for the connection to establish. If the connection is successful, you should see the visualized robot in Elements Studio moving every joint back and forth. NOTE: a software error should occur in Elements Studio which is expected because the mock external simulator did not close the loop by applying the calculated joint torques command to the simulated robot in it. This won't happen to real external simulators.
 
 ## Quick Start - Python
 

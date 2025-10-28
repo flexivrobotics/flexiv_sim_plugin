@@ -10,8 +10,8 @@ assignees: pzhu-flexiv
 
 ## Version info
 
-- Sim Plugin: [e.g. v1.1]
-- OS: [e.g. Ubuntu 20.04, x86_64]
+- Sim Plugin: [e.g. v1.2]
+- OS: [e.g. Ubuntu 22.04, x86_64]
 
 ## How urgent is this bug? Have you found any workarounds?
 

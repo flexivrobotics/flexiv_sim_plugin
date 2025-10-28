@@ -19,23 +19,31 @@ fi
 INSTALL_DIR=$1
 echo "Dependencies will be installed to: $INSTALL_DIR"
 
-# Use specified number for parallel build jobs, otherwise use number of cores 
+# Use specified number for parallel build jobs, otherwise use 4
 if [ -n "$2" ] ;then
-    NUM_JOBS=$2
+    export NUM_JOBS=$2
 else
-    NUM_JOBS=4
+    export NUM_JOBS=4
 fi
 echo "Number of parallel build jobs: $NUM_JOBS"
 
+# Set shared cmake arguments
+SHARED_CMAKE_ARGS="-DCMAKE_BUILD_TYPE=Release \
+                   -DBUILD_SHARED_LIBS=OFF \
+                   -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
+                   -DCMAKE_PREFIX_PATH=$INSTALL_DIR \
+                   -DCMAKE_INSTALL_PREFIX=$INSTALL_DIR \
+                   -DBUILD_TESTING=OFF"
 
 # Clone all dependencies in a subfolder
 mkdir -p cloned && cd cloned
+export SHARED_CMAKE_ARGS
 
 # Build and install all dependencies to INSTALL_DIR
-bash $SCRIPTPATH/scripts/install_spdlog.sh $INSTALL_DIR $NUM_JOBS
-bash $SCRIPTPATH/scripts/install_tinyxml2.sh $INSTALL_DIR $NUM_JOBS
-bash $SCRIPTPATH/scripts/install_foonathan_memory.sh $INSTALL_DIR $NUM_JOBS
-bash $SCRIPTPATH/scripts/install_Fast-CDR.sh $INSTALL_DIR $NUM_JOBS
-bash $SCRIPTPATH/scripts/install_Fast-DDS.sh $INSTALL_DIR $NUM_JOBS
+bash $SCRIPTPATH/scripts/install_spdlog.sh
+bash $SCRIPTPATH/scripts/install_tinyxml2.sh
+bash $SCRIPTPATH/scripts/install_foonathan_memory.sh
+bash $SCRIPTPATH/scripts/install_Fast-CDR.sh
+bash $SCRIPTPATH/scripts/install_Fast-DDS.sh
 
 echo ">>>>>>>>>> Finished <<<<<<<<<<"

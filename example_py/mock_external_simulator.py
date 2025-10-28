@@ -85,7 +85,7 @@ def step_physics(user_node, logger):
 
     # Step 4: apply joint torques command to the simulated robot in the external simulator
     # =============================================================================================
-    target_joint_torques = user_node.robot_commands().tau_d
+    target_joint_torques = user_node.robot_commands().target_drives
     # Call the external simulator's API to apply the target joint torques
 
     # End the current physics step with kPhysicsPeriod as roughly the total loop period
