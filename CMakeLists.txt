@@ -32,21 +32,15 @@ endif()
 # Threads
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
-if(Threads_FOUND)
-  message(STATUS "Found Threads: HAVE_PTHREAD = ${THREADS_HAVE_PTHREAD_ARG}")
-endif()
+message(STATUS "Found Threads")
 
 # spdlog
 find_package(spdlog REQUIRED)
-if(spdlog_FOUND)
-  message(STATUS "Found spdlog: ${spdlog_DIR}")
-endif()
+message(STATUS "Found spdlog v${spdlog_VERSION}: ${spdlog_DIR}")
 
 # Fast-DDS (Fast-RTPS)
-find_package(fastrtps 2.6.7 REQUIRED)
-if(fastrtps_FOUND)
-  message(STATUS "Found fastrtps: ${fastrtps_DIR}")
-endif()
+find_package(fastrtps REQUIRED)
+message(STATUS "Found fastrtps v${fastrtps_VERSION}: ${fastrtps_DIR}")
 
 # ===================================================================
 #      CREATE LIBRARY
