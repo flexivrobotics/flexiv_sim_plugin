@@ -1,8 +1,8 @@
 #!/bin/bash
 set -e
 
-# Same as the apt installed version on Ubuntu 22.04
-VER_TAG=v1.9.2
+# Use a specific version
+VER_TAG=v1.14.1
 
 # Clone source code
 if [ ! -d spdlog ] ; then

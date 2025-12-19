@@ -2,8 +2,8 @@
 set -e
 echo "Installing tinyxml2"
 
-# Same as the apt installed version on Ubuntu 22.04
-VER_TAG=9.0.0
+# Use a specific version
+VER_TAG=8.0.0
 
 # Clone source code
 if [ ! -d tinyxml2 ] ; then
