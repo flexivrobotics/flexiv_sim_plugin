@@ -29,6 +29,9 @@ constexpr double kSineFreq = 0.3;
 // Initial joint positions when the robot is at home posture [rad]
 const std::vector<float> kInitQ = {0.0, -0.698132, 0.0, 1.5708, 0.0, 0.698132, 0.0};
 
+// Joint degrees of freedom
+constexpr size_t kJointDof = 7;
+
 // Servo cycle of the physics loop
 unsigned int g_servo_cycle = 0;
 }
@@ -54,6 +57,8 @@ void StepPhysics(sim_plugin::UserNode& user_node)
     // =============================================================================================
     // Mocked robot states
     sim_plugin::SimRobotStates robot_states;
+    robot_states.q.resize(kJointDof);
+    robot_states.dq.resize(kJointDof);
 
     // Set and increment servo cycle per physics step
     robot_states.servo_cycle = g_servo_cycle++;
