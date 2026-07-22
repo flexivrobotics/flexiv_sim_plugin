@@ -73,7 +73,9 @@ The program should print some info messages and "Connected = False" at the end.
 
 An example script that mocks an external simulator is provided and can be used to test the plugin with the following steps:
 
-1. Start the mock program:
+1. Setup and run Flexiv Elements Studio simulation. See the relevant instructions at the end of this README.
+
+2. Start the mock program:
 
        cd flexiv_sim_plugin/example_py
        python3 -m pip install spdlog
@@ -81,7 +83,7 @@ An example script that mocks an external simulator is provided and can be used t
 
    NOTE: the robot serial number provided to the program is the same one you noted down when creating the simulated robot in Flexiv Elements Studio.
 
-2. The remaining steps are the same as documented in [Run the example C++ program](#run-the-example-c-program).
+3. Wait for the connection to establish. If the connection is successful, you should see the visualized robot in Elements Studio moving every joint back and forth. NOTE: a software error should occur in Elements Studio which is expected because the mock external simulator did not close the loop by applying the calculated joint torques command to the simulated robot in it. This won't happen to real external simulators.
 
 
 ## Quick Start - C++
@@ -103,6 +105,7 @@ An example script that mocks an external simulator is provided and can be used t
 The following steps are identical on all supported platforms.
 
 1. Choose a directory for installing the C++ library of Sim Plugin and its dependencies. This directory can be under system path or not, depending on whether you want Sim Plugin to be globally discoverable by CMake. For example, a new folder named ``sim_plugin_install`` under the home directory.
+
 2. In a new Terminal, run the provided script to compile and install all dependencies to the installation directory chosen in step 1:
 
        cd flexiv_sim_plugin/thirdparty
@@ -136,14 +139,15 @@ NOTE: ``-D`` followed by ``CMAKE_PREFIX_PATH`` tells the user project's CMake wh
 
 An example program that mocks an external simulator is provided and can be used to test the plugin with the following steps:
 
-1. Start the mock program:
+1. Setup and run Flexiv Elements Studio simulation. See the relevant instructions at the end of this README.
+
+2. Start the mock program:
 
        cd flexiv_sim_plugin/example/build
        ./mock_external_simulator [robot_serial_number]
 
    NOTE: the robot serial number provided to the program is the same one you noted down when creating the simulated robot in Flexiv Elements Studio.
 
-2. Go back to Elements Studio, then restart the exited simulator by toggling ON the *Connect* button.
 3. Wait for the connection to establish. If the connection is successful, you should see the visualized robot in Elements Studio moving every joint back and forth. NOTE: a software error should occur in Elements Studio which is expected because the mock external simulator did not close the loop by applying the calculated joint torques command to the simulated robot in it. This won't happen to real external simulators.
 
 ## API Documentation
@@ -181,5 +185,4 @@ Open any html file under ``flexiv_sim_plugin/doc/html/`` with your browser to vi
 4. Toggle on the *Connect* button for the newly added one, then wait for loading.
 5. When loading is finished, you'll see a robot at its upright pose, with an "Exception" error at the bottom right corner. This is expected because the external simulator is not started yet. But if you see a normally operating robot, that again means you are running the wrong version of Elements Studio that only supports the built-in physics engine.
 6. At the bottom of the window, click on the small robot icon with a "SIM" tag on it, then a small window will pop up, note down the displayed robot serial number.
-7. In the same small pop-up window, click *CHANGE CONNECTION*, then toggle off the *Connect* button to close the simulated robot. We will restart it later. Note that you do NOT need to close the whole Elements Studio program.
-8. Toggle the virtual motion bar slider button to the "auto" position. In resulting popup window, select "AUTO (REMOTE)"
+7. Toggle the virtual motion bar slider button to the "auto" position. In resulting popup window, select "AUTO (REMOTE)"
