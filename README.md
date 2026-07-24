@@ -166,12 +166,12 @@ Open any html file under ``flexiv_sim_plugin/doc/html/`` with your browser to vi
 ### Install Elements Studio on Ubuntu
 
 1. [Contact Flexiv](https://www.flexiv.com/contact) to obtain the installation package of Elements Studio.
-3. Extract the package to a non-root directory.
-4. Install Elements Studio:
+2. Extract the package to a non-root directory.
+3. Install Elements Studio:
 
        bash setup_FlexivElements.sh
 
-5. Switch physics engine from the default built-in to external:
+4. Switch physics engine from the default built-in to external:
 
        bash switch_physics_engine.sh
 
