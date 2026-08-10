@@ -4,7 +4,7 @@ about: Report a bug to help us improve
 title: "[BUG] "
 type: Bug
 labels: bug
-assignees: pzhu-flexiv
+assignees: bsoe-flexiv
 
 ---
 

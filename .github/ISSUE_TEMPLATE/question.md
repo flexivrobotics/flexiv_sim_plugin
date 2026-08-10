@@ -4,7 +4,7 @@ about: Ask a question related to Sim Plugin
 title: "[QUESTION] "
 type: Question
 labels: help wanted
-assignees: pzhu-flexiv
+assignees: bsoe-flexiv
 
 ---
 
