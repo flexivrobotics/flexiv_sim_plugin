@@ -1,8 +1,7 @@
 # Flexiv Elements Studio Setup
 
-Flexiv Elements Studio runs the simulated robot controller (and RDK server) that
-an external simulator connects to via Flexiv Sim Plugin. Set it up once before
-running any external-simulator workspace (e.g. [isaac_sim_ws](https://github.com/flexivrobotics/isaac_sim_ws)).
+Flexiv Elements Studio runs the simulated robot controller. 
+Set it up once before running any external-simulator workspace.
 
 ## Install Elements Studio on Ubuntu
 
@@ -25,5 +24,7 @@ running any external-simulator workspace (e.g. [isaac_sim_ws](https://github.com
 3. Choose "Create according to the selected robot type" and select one from the list, then click *CONFIRM*. A new simulated robot will be added to the simulator list.
 4. Toggle on the *Connect* button for the newly added one, then wait for loading.
 5. When loading is finished, you'll see a robot at its upright pose, with an "Exception" error at the bottom right corner. This is expected because the external simulator is not started yet. But if you see a normally operating robot, that again means you are running the wrong version of Elements Studio that only supports the built-in physics engine.
-6. At the bottom of the window, click on the small robot icon with a "SIM" tag on it, then a small window will pop up, note down the displayed robot serial number.
-7. Toggle the virtual motion bar slider button to the "auto" position. In resulting popup window, select "AUTO (REMOTE)".
+6. To enable RDK, Click Settings → Remote Mode → Select a Mode → Ethernet. In the resulting popup window, restart the simulated robot.
+7. Toggle the virtual motion bar slider button to the "auto" position. In the resulting popup window, select "AUTO (REMOTE)".
+8. At the bottom of the window, click on the small robot icon with a "SIM" tag on it, then a small window will pop up, note down the displayed robot serial number.
+

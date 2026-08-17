@@ -160,8 +160,3 @@ The API documentation can be generated using Doxygen. For example, on Linux:
 
 Open any html file under ``flexiv_sim_plugin/doc/html/`` with your browser to view the doc.
 
-
-## Flexiv Elements Studio Setup
-
-See [docs/elements_studio_setup.md](docs/elements_studio_setup.md) for how to
-install Elements Studio and create a simulated robot.
