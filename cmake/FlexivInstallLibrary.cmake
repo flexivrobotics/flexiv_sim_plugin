@@ -85,7 +85,7 @@ macro(FlexivInstallLibrary)
     # Replace the dummy static lib with the actual static lib 
     install(CODE 
             "file(REMOVE ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/${CMAKE_STATIC_LIBRARY_PREFIX}${PROJECT_NAME}${CMAKE_STATIC_LIBRARY_SUFFIX})")
-    install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/lib/${SIM_PLUGIN_LIB}
+    install(FILES ${SIM_PLUGIN_LIB_PATH}
             DESTINATION ${CMAKE_INSTALL_LIBDIR}
             RENAME ${CMAKE_STATIC_LIBRARY_PREFIX}${PROJECT_NAME}${CMAKE_STATIC_LIBRARY_SUFFIX}
             )

@@ -26,6 +26,25 @@ elseif(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
     message(FATAL_ERROR "Windows is currently not supported.")
 endif()
 
+# Download the pre-built static library from the matching GitHub release and
+# verify it against the committed checksum. The .a itself is not tracked in
+# this repo, only lib/${SIM_PLUGIN_LIB}.sha256.
+file(READ ${CMAKE_CURRENT_SOURCE_DIR}/lib/${SIM_PLUGIN_LIB}.sha256 EXPECTED_HASH)
+set(SIM_PLUGIN_LIB_URL https://github.com/flexivrobotics/flexiv_sim_plugin/releases/download/v${PROJECT_VERSION}/${SIM_PLUGIN_LIB})
+set(SIM_PLUGIN_LIB_PATH ${CMAKE_CURRENT_BINARY_DIR}/${SIM_PLUGIN_LIB})
+message(STATUS "Downloading ${SIM_PLUGIN_LIB_URL} ...")
+file(DOWNLOAD ${SIM_PLUGIN_LIB_URL} ${SIM_PLUGIN_LIB_PATH}
+     SHOW_PROGRESS
+     TLS_VERIFY ON
+     EXPECTED_HASH SHA256=${EXPECTED_HASH}
+     STATUS status)
+list(GET status 0 code)
+if(code EQUAL 0)
+  message(STATUS "Download finished")
+else()
+  message(FATAL_ERROR "Download failed: ${status}")
+endif()
+
 # ===================================================================
 #      PROJECT DEPENDENCIES
 # ===================================================================

@@ -7,3 +7,8 @@ install/
 cloned/
 html/
 __pycache__
+
+# Pre-built static libraries are attached to GitHub releases as assets, not
+# committed. Only the .sha256 checksum is tracked; the .a is downloaded by
+# CMake at configure time.
+lib/*.a

@@ -48,8 +48,8 @@ struct SimRobotStates
      * @note This contains values for both the external axes (if any) and the robot manipulator. */
     std::vector<float> dq = {};
 
-    /** Current wrist force sensor reading of the simulated robot: \f$ [f_x, f_y, f_z] \f$. Unit:
-     * \f$ [N] \f$. */
+    /** Current wrist force sensor reading of the simulated robot: \f$ [f_x, f_y, f_z] \f$. Unit: \f$
+     * [N] \f$. */
     std::vector<float> wrist_force = {};
 
     /** Current wrist torque sensor reading of the simulated robot: \f$ [m_x, m_y, m_z] \f$. Unit:
