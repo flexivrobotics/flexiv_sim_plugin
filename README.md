@@ -45,7 +45,7 @@ In theory, any simulator that meets the following criteria should work:
 
 | **OS**                | **Platform** | **C++ compiler kit** | **Python interpreter** |
 | --------------------- | ------------ | -------------------- | ---------------------- |
-| Linux (Ubuntu 20.04+) | x86_64       | GCC v9.4+            | 3.10, 3.11, 3.12       |
+| Linux (Ubuntu 20.04+) | x86_64       | GCC v9.4+            | 3.10, 3.12, 3.14       |
 
 
 ## Quick Start - Python
