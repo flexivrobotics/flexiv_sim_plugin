@@ -45,7 +45,7 @@ In theory, any simulator that meets the following criteria should work:
 
 | **OS**                | **Platform** | **C++ compiler kit** | **Python interpreter** |
 | --------------------- | ------------ | -------------------- | ---------------------- |
-| Linux (Ubuntu 20.04+) | x86_64       | GCC v9.4+            | 3.10, 3.11, 3.12       |
+| Linux (Ubuntu 20.04+) | x86_64       | GCC v9.4+            | 3.10, 3.12, 3.14       |
 
 
 ## Quick Start - Python
@@ -73,7 +73,7 @@ The program should print some info messages and "Connected = False" at the end.
 
 An example script that mocks an external simulator is provided and can be used to test the plugin with the following steps:
 
-1. Setup and run Flexiv Elements Studio simulation. See the relevant instructions at the end of this README.
+1. Setup and run Flexiv Elements Studio simulation. See [docs/elements_studio_setup.md](docs/elements_studio_setup.md).
 
 2. Start the mock program:
 
@@ -139,7 +139,7 @@ NOTE: ``-D`` followed by ``CMAKE_PREFIX_PATH`` tells the user project's CMake wh
 
 An example program that mocks an external simulator is provided and can be used to test the plugin with the following steps:
 
-1. Setup and run Flexiv Elements Studio simulation. See the relevant instructions at the end of this README.
+1. Setup and run Flexiv Elements Studio simulation. See [docs/elements_studio_setup.md](docs/elements_studio_setup.md).
 
 2. Start the mock program:
 
@@ -160,29 +160,3 @@ The API documentation can be generated using Doxygen. For example, on Linux:
 
 Open any html file under ``flexiv_sim_plugin/doc/html/`` with your browser to view the doc.
 
-
-## Flexiv Elements Studio Setup
-
-### Install Elements Studio on Ubuntu
-
-1. [Contact Flexiv](https://www.flexiv.com/contact) to obtain the installation package of Elements Studio.
-2. Extract the package to a non-root directory.
-3. Install Elements Studio:
-
-       bash setup_FlexivElements.sh
-
-4. Switch physics engine from the default built-in to external:
-
-       bash switch_physics_engine.sh
-
-   Select *External* when prompted.
-
-### Create a simulated robot in Elements Studio
-
-1. Start Flexiv Elements Studio from the application menu.
-2. In the Robot Connection window, select *Simulator*, and click *CREATE*.
-3. Choose "Create according to the selected robot type" and select one from the list, then click *CONFIRM*. A new simulated robot will be added to the simulator list.
-4. Toggle on the *Connect* button for the newly added one, then wait for loading.
-5. When loading is finished, you'll see a robot at its upright pose, with an "Exception" error at the bottom right corner. This is expected because the external simulator is not started yet. But if you see a normally operating robot, that again means you are running the wrong version of Elements Studio that only supports the built-in physics engine.
-6. At the bottom of the window, click on the small robot icon with a "SIM" tag on it, then a small window will pop up, note down the displayed robot serial number.
-7. Toggle the virtual motion bar slider button to the "auto" position. In resulting popup window, select "AUTO (REMOTE)"
