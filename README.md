@@ -1,6 +1,7 @@
 # Flexiv Sim Plugin
 
-![CMake Badge](https://github.com/flexivrobotics/flexiv_sim_plugin/actions/workflows/cmake.yml/badge.svg)
+![Cpp Badge](https://github.com/flexivrobotics/flexiv_sim_plugin/actions/workflows/ci-cpp.yml/badge.svg)
+![Python Badge](https://github.com/flexivrobotics/flexiv_sim_plugin/actions/workflows/ci-python.yml/badge.svg)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
 
 
@@ -45,7 +46,7 @@ In theory, any simulator that meets the following criteria should work:
 
 | **OS**                | **Platform** | **C++ compiler kit** | **Python interpreter** |
 | --------------------- | ------------ | -------------------- | ---------------------- |
-| Linux (Ubuntu 20.04+) | x86_64       | GCC v9.4+            | 3.10, 3.12, 3.14       |
+| Linux (Ubuntu 22.04+) | x86_64       | GCC v11.4+           | 3.10, 3.12, 3.14       |
 
 
 ## Quick Start - Python
@@ -78,7 +79,6 @@ An example script that mocks an external simulator is provided and can be used t
 2. Start the mock program:
 
        cd flexiv_sim_plugin/example_py
-       python3 -m pip install spdlog
        python3 ./mock_external_simulator.py [robot_serial_number]
 
    NOTE: the robot serial number provided to the program is the same one you noted down when creating the simulated robot in Flexiv Elements Studio.
@@ -104,14 +104,11 @@ An example script that mocks an external simulator is provided and can be used t
 
 The following steps are identical on all supported platforms.
 
-1. Choose a directory for installing the C++ library of Sim Plugin and its dependencies. This directory can be under system path or not, depending on whether you want Sim Plugin to be globally discoverable by CMake. For example, a new folder named ``sim_plugin_install`` under the home directory.
+The C++ library is a self-contained shared library: its dependencies are built in, so there is nothing else to install first.
 
-2. In a new Terminal, run the provided script to compile and install all dependencies to the installation directory chosen in step 1:
+1. Choose a directory for installing the C++ library of Sim Plugin. This directory can be under system path or not, depending on whether you want Sim Plugin to be globally discoverable by CMake. For example, a new folder named ``sim_plugin_install`` under the home directory.
 
-       cd flexiv_sim_plugin/thirdparty
-       bash build_and_install_dependencies.sh ~/sim_plugin_install
-
-3. In a new Terminal, configure the ``flexiv_sim_plugin`` CMake project:
+2. In a new Terminal, configure the ``flexiv_sim_plugin`` CMake project. This downloads the prebuilt library from the matching GitHub release and verifies its checksum:
 
        cd flexiv_sim_plugin
        mkdir build && cd build
@@ -119,7 +116,7 @@ The following steps are identical on all supported platforms.
 
    NOTE: ``-D`` followed by ``CMAKE_INSTALL_PREFIX`` sets the absolute path of the installation directory, which should be the one chosen in step 1.
 
-4. Install ``flexiv_sim_plugin`` C++ library to ``CMAKE_INSTALL_PREFIX`` path, which may or may not be globally discoverable by CMake:
+3. Install ``flexiv_sim_plugin`` C++ library to ``CMAKE_INSTALL_PREFIX`` path, which may or may not be globally discoverable by CMake:
 
        cd flexiv_sim_plugin/build
        cmake --build . --target install --config Release
@@ -133,7 +130,7 @@ After the library is installed as ``flexiv_sim_plugin`` CMake target, it can be 
     cmake .. -DCMAKE_PREFIX_PATH=~/sim_plugin_install
     cmake --build . --config Release -j 4
 
-NOTE: ``-D`` followed by ``CMAKE_PREFIX_PATH`` tells the user project's CMake where to find the installed C++ library. This argument can be skipped if the Sim Plugin library and its dependencies are installed to a globally discoverable location.
+NOTE: ``-D`` followed by ``CMAKE_PREFIX_PATH`` tells the user project's CMake where to find the installed C++ library. This argument can be skipped if the Sim Plugin library is installed to a globally discoverable location.
 
 ### Run the example C++ program
 
@@ -141,7 +138,7 @@ An example program that mocks an external simulator is provided and can be used 
 
 1. Setup and run Flexiv Elements Studio simulation. See [docs/elements_studio_setup.md](docs/elements_studio_setup.md).
 
-2. Start the mock program:
+2. Start the mock program. The install location of the Sim Plugin shared library is baked into the executable as an RPATH, so it is found automatically at runtime with no extra setup:
 
        cd flexiv_sim_plugin/example/build
        ./mock_external_simulator [robot_serial_number]

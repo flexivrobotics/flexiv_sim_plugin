@@ -1,0 +1,43 @@
+name: "Shared Check Steps for C++"
+runs:
+  using: "composite"
+  # Note: working directory will be reset to the repo root for each new step
+  steps:
+    # Use a fixed CMake version
+    - name: Set up CMake
+      uses: jwlawson/actions-setup-cmake@v2
+      with:
+        cmake-version: '3.28.3'
+
+    # Configure CMake, then build and install flexiv_sim_plugin library to the installation
+    # directory. The library has no dependencies to build first: everything it uses is embedded.
+    - name: Build and install library
+      shell: bash
+      run: |
+        cmake --version
+        mkdir -p build && cd build
+        cmake .. -DCMAKE_INSTALL_PREFIX=~/sim_plugin_install
+        cmake --build . --target install --config Release
+
+    # Guard the prebuilt library that was just downloaded: Sim Plugin ships as a self-contained
+    # shared library, so anything it loads beyond the OS C/C++ runtime is a dependency left over
+    # from the machine that built it. That kind of leak passes every build-time check and only shows
+    # up as a loader failure on the user's machine, which is why it is asserted here rather than
+    # trusted.
+    - name: Check dependencies of prebuilt library
+      shell: bash
+      run: |
+        shopt -s nullglob
+        # The <name>.<arch>-<os>.<ext> asset, not the dummy libflexiv_sim_plugin.<ext> CMake target
+        # output.
+        artifacts=(build/libflexiv_sim_plugin.*-*.*)
+        bash .github/scripts/check_artifacts.sh "${artifacts[@]}"
+
+    # Find and link to flexiv_sim_plugin library, then build all examples.
+    - name: Build examples
+      shell: bash
+      run: |
+        cd example
+        mkdir -p build && cd build
+        cmake .. -DCMAKE_PREFIX_PATH=~/sim_plugin_install
+        cmake --build . --config Release -j 4
