@@ -48,18 +48,6 @@ In theory, any simulator that meets the following criteria should work:
 | --------------------- | ------------ | -------------------- | ---------------------- |
 | Linux (Ubuntu 22.04+) | x86_64       | GCC v11.4+           | 3.10, 3.12, 3.14       |
 
-Each release line of Flexiv Sim Plugin works with one release line of Flexiv Elements Studio, because the two must use the same transport and messages:
-
-| **flexiv_sim_plugin** | **Elements Studio** | **Transport** | **Branch** |
-| --------------------- | ------------------- | ------------- | ---------- |
-| 2.2.x                 | v3E.2               | Zenoh         | `v2.x`     |
-| 2.1.x                 | v3E.1               | Fast-DDS      | `v2.1.x`   |
-| 1.3.0                 | v3.11.2             | Fast-DDS      | `v1.x`     |
-
-This branch, `v2.1.x`, is the 2.1 line for Elements Studio v3E.1. It finds Elements Studio by Fast-DDS discovery, which multicasts to `239.255.0.1` on UDP port 14900 (DDS domain 30), so the external simulator and Elements Studio must be on a network that passes multicast. A VPN, or Docker's default bridge network, can prevent the connection; run a container on the host network.
-
-`SimRobotStates::wrist_force` and `wrist_torque` are accepted, so the same code builds against every 2.x release, but Elements Studio v3E.1 doesn't receive them: the plugin logs a warning once and drops them.
-
 
 ## Quick Start - Python
 

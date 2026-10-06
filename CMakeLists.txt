@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.22.1)
 # ===================================================================
 #      PROJECT SETUP
 # ===================================================================
-project(flexiv_sim_plugin VERSION 2.1.0 LANGUAGES CXX)
+project(flexiv_sim_plugin VERSION 2.2.0 LANGUAGES CXX)
 
 # Configure build type
 if(NOT CMAKE_BUILD_TYPE)
@@ -69,7 +69,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC
   $<INSTALL_INTERFACE:include>
 )
 
-# Link to dependencies. Every thirdparty dependency (Fast-DDS, spdlog, ...) is embedded in the prebuilt
+# Link to dependencies. Every thirdparty dependency (Zenoh, spdlog) is embedded in the prebuilt
 # library and hidden, so only Threads leaks through the public API.
 target_link_libraries(${PROJECT_NAME} PUBLIC
   Threads::Threads
