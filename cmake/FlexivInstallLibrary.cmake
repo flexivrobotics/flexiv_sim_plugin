@@ -82,12 +82,15 @@ macro(FlexivInstallLibrary)
             DESTINATION "lib/cmake/${PROJECT_NAME}"
             )
 
-    # Replace the dummy static lib with the actual static lib 
-    install(CODE 
-            "file(REMOVE ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/${CMAKE_STATIC_LIBRARY_PREFIX}${PROJECT_NAME}${CMAKE_STATIC_LIBRARY_SUFFIX})")
-    install(FILES ${SIM_PLUGIN_LIB_PATH}
+    # Replace the dummy library built above with the actual prebuilt library
+    # that was downloaded: a single shared-library artifact (.so on Linux).
+    set(_sim_plugin_installed_lib
+        "${CMAKE_SHARED_LIBRARY_PREFIX}${PROJECT_NAME}${CMAKE_SHARED_LIBRARY_SUFFIX}")
+    install(CODE
+            "file(REMOVE ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/${_sim_plugin_installed_lib})")
+    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${SIM_PLUGIN_LIB}
             DESTINATION ${CMAKE_INSTALL_LIBDIR}
-            RENAME ${CMAKE_STATIC_LIBRARY_PREFIX}${PROJECT_NAME}${CMAKE_STATIC_LIBRARY_SUFFIX}
+            RENAME ${_sim_plugin_installed_lib}
             )
 
     # Use the CPack Package Generator

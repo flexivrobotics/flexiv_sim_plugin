@@ -5,6 +5,8 @@ Set it up once before running any external-simulator workspace.
 
 ## Install Elements Studio on Ubuntu
 
+Elements Studio runs on Ubuntu 22.04. On a newer Ubuntu, run it in an Ubuntu 22.04 container instead of installing it: [isaac_sim_ws](https://github.com/flexivrobotics/isaac_sim_ws/tree/v2.1.x#run-elements-studio-in-a-container) provides `launch_elements_studio.sh` for that. Then skip step 3 below, and run step 4 from the container's shell.
+
 1. [Contact Flexiv](https://www.flexiv.com/contact) to obtain the installation package of Elements Studio.
 2. Extract the package to a non-root directory.
 3. Install Elements Studio:

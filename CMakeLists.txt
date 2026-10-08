@@ -1,9 +1,9 @@
-cmake_minimum_required(VERSION 3.16.3)
+cmake_minimum_required(VERSION 3.22.1)
 
 # ===================================================================
 #      PROJECT SETUP
 # ===================================================================
-project(flexiv_sim_plugin VERSION 1.3.0)
+project(flexiv_sim_plugin VERSION 2.1.0 LANGUAGES CXX)
 
 # Configure build type
 if(NOT CMAKE_BUILD_TYPE)
@@ -11,39 +11,39 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Release" "Debug" "RelWithDebInfo" "MinSizeRel")
 
-# Set static library according to platform
+# Select the prebuilt library for this platform. Sim Plugin is shipped as a self-contained shared
+# library.
 message(STATUS "OS: ${CMAKE_SYSTEM_NAME}")
 message(STATUS "Processor: ${CMAKE_SYSTEM_PROCESSOR}")
 if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
   if(${CMAKE_SYSTEM_PROCESSOR} MATCHES "x86_64")
-    set(SIM_PLUGIN_LIB "libflexiv_sim_plugin.x86_64-linux-gnu.a")
+    set(SIM_PLUGIN_LIB "libflexiv_sim_plugin.x86_64-linux-gnu.so")
   else()
     message(FATAL_ERROR "Linux with ${CMAKE_SYSTEM_PROCESSOR} processor is currently not supported.")
   endif()
-elseif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-    message(FATAL_ERROR "macOS is currently not supported.")
-elseif(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
-    message(FATAL_ERROR "Windows is currently not supported.")
+else()
+  message(FATAL_ERROR "${CMAKE_SYSTEM_NAME} is currently not supported.")
 endif()
 
-# Download the pre-built static library from the matching GitHub release and
-# verify it against the committed checksum. The .a itself is not tracked in
-# this repo, only lib/${SIM_PLUGIN_LIB}.sha256.
-file(READ ${CMAKE_CURRENT_SOURCE_DIR}/lib/${SIM_PLUGIN_LIB}.sha256 EXPECTED_HASH)
-set(SIM_PLUGIN_LIB_URL https://github.com/flexivrobotics/flexiv_sim_plugin/releases/download/v${PROJECT_VERSION}/${SIM_PLUGIN_LIB})
-set(SIM_PLUGIN_LIB_PATH ${CMAKE_CURRENT_BINARY_DIR}/${SIM_PLUGIN_LIB})
-message(STATUS "Downloading ${SIM_PLUGIN_LIB_URL} ...")
-file(DOWNLOAD ${SIM_PLUGIN_LIB_URL} ${SIM_PLUGIN_LIB_PATH}
-     SHOW_PROGRESS
-     TLS_VERIFY ON
-     EXPECTED_HASH SHA256=${EXPECTED_HASH}
-     STATUS status)
-list(GET status 0 code)
-if(code EQUAL 0)
-  message(STATUS "Download finished")
-else()
-  message(FATAL_ERROR "Download failed: ${status}")
-endif()
+# Download a release asset by file name, verifying its SHA256 against the
+# checked-in <name>.sha256 placeholder.
+function(sim_plugin_download_release_asset asset_name)
+  file(READ ${CMAKE_CURRENT_SOURCE_DIR}/lib/${asset_name}.sha256 expected_hash)
+  set(asset_url https://github.com/flexivrobotics/flexiv_sim_plugin/releases/download/v${PROJECT_VERSION}/${asset_name})
+  message(STATUS "Downloading ${asset_url} ...")
+  file(DOWNLOAD ${asset_url} ${CMAKE_CURRENT_BINARY_DIR}/${asset_name}
+       SHOW_PROGRESS
+       TLS_VERIFY ON
+       EXPECTED_HASH SHA256=${expected_hash}
+       STATUS status)
+  list(GET status 0 code)
+  if(NOT code EQUAL 0)
+    message(FATAL_ERROR "Download failed: ${status}")
+  endif()
+  message(STATUS "Download finished: ${asset_name}")
+endfunction()
+
+sim_plugin_download_release_asset(${SIM_PLUGIN_LIB})
 
 # ===================================================================
 #      PROJECT DEPENDENCIES
@@ -53,23 +53,12 @@ set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 message(STATUS "Found Threads")
 
-# spdlog
-find_package(spdlog REQUIRED)
-message(STATUS "Found spdlog v${spdlog_VERSION}: ${spdlog_DIR}")
-
-# Fast-DDS (Fast-RTPS)
-find_package(fastrtps REQUIRED)
-message(STATUS "Found fastrtps v${fastrtps_VERSION}: ${fastrtps_DIR}")
-
-# Fast-CDR
-find_package(fastcdr REQUIRED)
-message(STATUS "Found fastcdr v${fastcdr_VERSION}: ${fastcdr_DIR}")
-
 # ===================================================================
 #      CREATE LIBRARY
 # ===================================================================
-# Create static library target with dummy source
-add_library(${PROJECT_NAME} STATIC ${CMAKE_CURRENT_SOURCE_DIR}/lib/dummy.cpp)
+# Create the library target with a dummy source. The dummy output is replaced at
+# install time by the downloaded prebuilt shared library (see FlexivInstallLibrary).
+add_library(${PROJECT_NAME} SHARED ${CMAKE_CURRENT_SOURCE_DIR}/lib/dummy.cpp)
 
 # Create an alias of the target with flexiv namespace
 add_library(flexiv::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
@@ -80,12 +69,10 @@ target_include_directories(${PROJECT_NAME} PUBLIC
   $<INSTALL_INTERFACE:include>
 )
 
-# Link to dependencies
+# Link to dependencies. Every thirdparty dependency (Fast-DDS, spdlog, ...) is embedded in the prebuilt
+# library and hidden, so only Threads leaks through the public API.
 target_link_libraries(${PROJECT_NAME} PUBLIC
   Threads::Threads
-  spdlog::spdlog
-  fastrtps
-  fastcdr
 )
 
 # Use moderate compiler warning option
@@ -95,6 +82,8 @@ else()
   target_compile_options(${PROJECT_NAME} PUBLIC /W1)
 endif()
 
-# Install the library
+# ===================================================================
+#      LIBRARY INSTALLATION
+# ===================================================================
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/FlexivInstallLibrary.cmake)
 FlexivInstallLibrary()

@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.16.3)
+cmake_minimum_required(VERSION 3.22.1)
 project(flexiv_sim_plugin-examples)
 
 # Show verbose build info
@@ -17,7 +17,7 @@ set(EXAMPLE_LIST
   mock_external_simulator
 )
 
-# Find flexiv_sim_plugin INTERFACE library
+# Find flexiv_sim_plugin library
 find_package(flexiv_sim_plugin REQUIRED)
 
 # Build all selected examples

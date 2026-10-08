@@ -8,6 +8,7 @@
 #define FLEXIV_SIM_PLUGIN_DATA_HPP_
 
 #include <array>
+#include <cstdint>
 #include <vector>
 #include <string>
 
