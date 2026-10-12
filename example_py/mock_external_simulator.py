@@ -12,7 +12,7 @@ __author__ = "Flexiv"
 import time
 import math
 import argparse
-import spdlog  # pip install
+import logging
 import flexivsimplugin  # pip install
 
 # Frequency of the external simulator's physics loop [Hz]
@@ -104,7 +104,8 @@ def main():
     args = argparser.parse_args()
 
     # Create logger
-    logger = spdlog.ConsoleLogger("Example")
+    logging.basicConfig(level=logging.INFO, format="[%(levelname)s] %(message)s")
+    logger = logging.getLogger("Example")
 
     # Print description
     logger.info(
@@ -117,7 +118,7 @@ def main():
 
     # Wait for connected
     while not user_node.connected():
-        logger.warn("Waiting for connection with Flexiv Elements Studio")
+        logger.warning("Waiting for connection with Flexiv Elements Studio")
         time.sleep(1)
     logger.info("Connected with Flexiv Elements Studio, starting mocked physics loop")
 

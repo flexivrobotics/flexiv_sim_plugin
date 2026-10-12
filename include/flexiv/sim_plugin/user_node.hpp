@@ -22,8 +22,11 @@ class UserNode final
 public:
     /**
      * @brief Create the node.
-     * @param[in] robot_sn Serial number of the simulated robot created in Flexiv Elements Studio.
-     * The accepted formats are: "Rizon 4-123456" and "Rizon4-123456".
+     * @param[in] robot_sn Serial number of the simulated robot created in Flexiv Elements Studio,
+     * as Elements Studio displays it, e.g. "Rizon 4-123456". The node finds the robot by the
+     * sequence number at its end, "123456", which is unique to each robot: the model name before
+     * it is not used, because some Elements Studio versions advertise a different one. The node
+     * connects once Elements Studio starts the simulated robot.
      * @param[in] debug_print Print debug info.
      */
     UserNode(const std::string& robot_sn, bool debug_print = false);

@@ -7,7 +7,6 @@
  */
 
 #include <flexiv/sim_plugin/user_node.hpp>
-#include <spdlog/spdlog.h>
 
 #include <math.h>
 #include <iostream>
@@ -78,7 +77,7 @@ void StepPhysics(sim_plugin::UserNode& user_node)
     // Step 2: send robot states to Flexiv Elements Studio
     // =============================================================================================
     if (!user_node.SendRobotStates(robot_states)) {
-        spdlog::error("Failed to send robot states data");
+        std::cerr << "[error] Failed to send robot states data" << std::endl;
     }
 
     // Step 3: wait for Elements Studio to calculate and deliver new robot commands
@@ -86,7 +85,7 @@ void StepPhysics(sim_plugin::UserNode& user_node)
     // Must set a timeout value to avoid deadlock
     constexpr unsigned int kWaitTimeoutMs = 100;
     if (!user_node.WaitForRobotCommands(kWaitTimeoutMs)) {
-        spdlog::error("WaitForRobotCommands() timeout");
+        std::cerr << "[error] WaitForRobotCommands() timeout" << std::endl;
     }
 
     // Step 4: apply joint torques command to the simulated robot in the external simulator
@@ -112,19 +111,19 @@ int main(int argc, char* argv[])
     std::string robot_sn = argv[1];
 
     // Print description
-    spdlog::info(
-        ">>> Tutorial description <<<\nA simple example demonstrating how to use Flexiv Sim Plugin "
-        "in an external simulator.\n");
+    std::cout << ">>> Tutorial description <<<\nA simple example demonstrating how to use Flexiv Sim "
+                 "Plugin in an external simulator.\n"
+              << std::endl;
 
     // Create user node
     sim_plugin::UserNode user_node(robot_sn);
 
     // Wait for connected
     while (!user_node.connected()) {
-        spdlog::warn("Waiting for connection with Flexiv Elements Studio");
+        std::cerr << "[warn] Waiting for connection with Flexiv Elements Studio" << std::endl;
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
-    spdlog::info("Connected with Flexiv Elements Studio, starting mocked physics loop");
+    std::cout << "Connected with Flexiv Elements Studio, starting mocked physics loop" << std::endl;
 
     // Run mocked physics loop
     while (user_node.connected()) {

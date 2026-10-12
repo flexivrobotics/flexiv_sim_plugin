@@ -1,0 +1,30 @@
+name: CI-Cpp
+
+on:
+  push:
+    branches: [v2.x, v2.1.x]
+  pull_request:
+    branches: [v2.x, v2.1.x]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
+  BUILD_TYPE: Release
+
+jobs:
+  ci-cpp:
+    name: CI-Cpp @ ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-22.04
+          - ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./.github/workflows/shared_cpp_steps
